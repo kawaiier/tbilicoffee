@@ -1,9 +1,14 @@
+@font-face {
+  font-family: 'Alegreya Sans SC', sans-serif;
+  src: local('AlegreyaSansSC'), url(./assets/AlegreyaSansSC-Light.ttf);
+}
+
 * {
   margin: 0;
 }
 
 .App {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: AlegreyaSansSC, sans-serif;
 }
 
 .App-header {
@@ -27,15 +32,40 @@ h1 {
 
 .App-footer {
   position: fixed;
-  left: 0;
+  right: 0;
   bottom: 0;
-  width: 100%;
-  background-color: black;
+  /* width: 100%; */
+  background-color: grey;
   color: white;
-  text-align: center;
-  padding: 10px;  
+  text-align: right;
+  padding: 5px;
+  font-size: 12px;
 }
 
 .App-footer a {
   color: wheat;
+}
+
+.login {
+  padding: 10px;
+}
+
+.login button {
+  border: none;
+  background-color: rgb(245, 222, 179);
+  box-shadow: 1px -1px teal;
+  color: teal;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: teal;
+  cursor: pointer;
+}
+
+hr {
+  border-top: 1px solid rgba(0, 128, 128, 0.2);
+  margin: 5px;
+  width: 50%;
 }

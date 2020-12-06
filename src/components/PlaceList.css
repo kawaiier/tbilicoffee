@@ -9,7 +9,33 @@
     /* flex-wrap: wrap; */
   }
 
-  .add-item > *{
+  .add-item > * {
     padding: 10px;
     margin: 5px;
+    width: 100%;
   }
+
+  .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .checkboxItem {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+  }
+
+  .contactMe {
+      padding: 20px 0px;
+  }
+
+  .contactMe a {
+      color: teal;
+      text-decoration: none;
+  }
+
+  .contactMe a:hover{
+    text-decoration: underline;
+}

@@ -14,15 +14,16 @@ class PlacesList extends React.Component {
                 city: '',
                 address: '',
                 mapsLink: '',
+                facebookLink: '',
+                instagramLink: '',
                 type:'',
                 petFriendly: false,
                 outdoorSeats: false,
                 rating: '',
-                prices: {
-                    espresso: '',
-                    americano: '',
-                    latte: ''
-                }
+                beans: '',
+                espressoPrice: '',
+                americanoPrice: '',
+                lattePrice: ''
             },
             places: [],
             user: null,
@@ -74,10 +75,16 @@ class PlacesList extends React.Component {
             city: this.state.place.city,
             address: this.state.place.address,
             mapsLink: this.state.place.mapsLink,
+            facebookLink: this.state.place.facebookLink,
+            instagramLink: this.state.place.instagramLink,
             type: this.state.place.type,
             petFriendly: this.state.place.petFriendly,
             outdoorSeats: this.state.place.outdoorSeats,
-            rating: this.state.place.rating
+            rating: this.state.place.rating,
+            beans: this.state.place.beans,
+            espressoPrice: this.state.place.espressoPrice,
+            americanoPrice: this.state.place.americanoPrice,
+            lattePrice: this.state.place.lattePrice
         }
         if (place.name && place.address){
             placesRef.push(place);
@@ -88,10 +95,16 @@ class PlacesList extends React.Component {
                     city: '',
                     address: '',
                     mapsLink: '',
+                    facebookLink: '',
+                    instagramLink: '',
                     type:'',
                     petFriendly: false,
                     outdoorSeats: false, 
-                    rating: ''
+                    rating: '',
+                    beans: '',
+                    espressoPrice: '',
+                    americanoPrice: '',
+                    lattePrice: ''
                 }
             }
             )
@@ -137,10 +150,16 @@ class PlacesList extends React.Component {
                         city: places[place].city,
                         address: places[place].address,
                         mapsLink: places[place].mapsLink,
+                        facebookLink: places[place].facebookLink,
+                        instagramLink: places[place].instagramLink,
                         type: places[place].type,
                         petFriendly: places[place].petFriendly,
                         outdoorSeats: places[place].outdoorSeats,
-                        rating: places[place].rating
+                        rating: places[place].rating,
+                        beans: places[place].beans,
+                        espressoPrice: places[place].espressoPrice,
+                        americanoPrice: places[place].americanoPrice,
+                        lattePrice: places[place].lattePrice,
                     }
                 })
             }
@@ -152,16 +171,16 @@ class PlacesList extends React.Component {
 
     render() { 
         return (
-                <div className="wrapper">
-                    <Login user={this.state.user} login={this.login} logout={this.logout}/>
+                <div className="wrapper content">
                     
                     {
                         (this.state.user && this.state.user.uid === process.env.REACT_APP_USER_ID) ? 
                                     <PlaceSubmit place={this.state.place} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/> :
-                                    <div>Write @kawaiier to add more places</div>
+                                    <div className='contactMe'><a href='https://www.facebook.com/Kawaiier/'>Contact me to add more places</a></div>
                                     }
                     
                     <Place places={this.state.places}/>
+                    <Login user={this.state.user} login={this.login} logout={this.logout}/>
                 </div>
         )
     }
