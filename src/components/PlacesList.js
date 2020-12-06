@@ -1,15 +1,32 @@
 import React from 'react';
 import firebase, { auth, provider } from '../firebase'
+import Login from './Login';
 import Place from './Place';
+import './PlaceList.css'
+import PlaceSubmit from './PlaceSubmit';
 
 class PlacesList extends React.Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
-            name: '',
-            rating: '',
+            place: {
+                name: '',
+                city: '',
+                address: '',
+                mapsLink: '',
+                type:'',
+                petFriendly: false,
+                outdoorSeats: false,
+                rating: '',
+                prices: {
+                    espresso: '',
+                    americano: '',
+                    latte: ''
+                }
+            },
             places: [],
-            user: null
+            user: null,
+            isLoggedIn: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,27 +35,76 @@ class PlacesList extends React.Component {
     }
 
     handleChange(event){
-        this.setState({
-            [event.target.name]: event.target.value
-        })
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        this.setState(
+            {
+            place : {
+                ...this.state.place,
+                [name]: value,
+            }
+            })
+        // console.log(name)
+        // console.log(value)
+        if (this.state.place.type === ''){
+            this.setState({
+                place : {
+                    ...this.state.place,
+                    type: 'cafe'
+                }
+            })
+        }
+        if (this.state.place.city === ''){
+            this.setState({
+                place : {
+                    ...this.state.place,
+                    city: 'Tbilisi'
+                }
+            })
+        }
     }
 
     handleSubmit(event){
         event.preventDefault();
-        const  placesRef = firebase.database().ref('places');
+        const placesRef = firebase.database().ref('places');
         const place = {
-            name: this.state.name,
-            rating: this.state.rating
+            name: this.state.place.name,
+            city: this.state.place.city,
+            address: this.state.place.address,
+            mapsLink: this.state.place.mapsLink,
+            type: this.state.place.type,
+            petFriendly: this.state.place.petFriendly,
+            outdoorSeats: this.state.place.outdoorSeats,
+            rating: this.state.place.rating
         }
-        placesRef.push(place);
-        this.setState({
-            name: '',
-            rating: ''
-        })
+        if (place.name && place.address){
+            placesRef.push(place);
+            this.setState( 
+                {
+                place: {
+                    name: '',
+                    city: '',
+                    address: '',
+                    mapsLink: '',
+                    type:'',
+                    petFriendly: false,
+                    outdoorSeats: false, 
+                    rating: ''
+                }
+            }
+            )
+        }
     }
 
     logout() {
-
+        auth.signOut()
+        .then(() => {
+            this.setState({
+                user: null
+            });
+        });
     }
 
     login(){
@@ -65,9 +131,17 @@ class PlacesList extends React.Component {
             let newState = [];
             for (let place in places){
                 newState.push({
-                    id: place,
-                    name: places[place].name,
-                    rating: places[place].rating
+                    place : {
+                        id: place,
+                        name: places[place].name,
+                        city: places[place].city,
+                        address: places[place].address,
+                        mapsLink: places[place].mapsLink,
+                        type: places[place].type,
+                        petFriendly: places[place].petFriendly,
+                        outdoorSeats: places[place].outdoorSeats,
+                        rating: places[place].rating
+                    }
                 })
             }
             this.setState({
@@ -78,28 +152,17 @@ class PlacesList extends React.Component {
 
     render() { 
         return (
-            <div>
-                <h2>Test</h2>
                 <div className="wrapper">
-                    {this.state.user ?
-                        <div>
-                            <button onClick={this.logout}>Log Out</button>
-                            {(this.state.user.uid === 'SijEoyfdhUOZs4J1K45NwHvloL92') ? 
-                                <section className="add-item">
-                                <form onSubmit={this.handleSubmit}>
-                                    <input type="text" name="name" placeholder="What's the name of the place?" onChange={this.handleChange} value={this.state.name} />
-                                    <input type="number" name="rating" placeholder="What is your rating?" onChange={this.handleChange} value={this.state.rating} min='1' max='5'/>
-                                    <button>Add Item</button>
-                                </form>
-                            </section> : <div></div>}
-                            
-                        </div>                
-                        :
-                        <button onClick={this.login}>Log In</button>              
-                    }
+                    <Login user={this.state.user} login={this.login} logout={this.logout}/>
+                    
+                    {
+                        (this.state.user && this.state.user.uid === process.env.REACT_APP_USER_ID) ? 
+                                    <PlaceSubmit place={this.state.place} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/> :
+                                    <div>Write @kawaiier to add more places</div>
+                                    }
+                    
+                    <Place places={this.state.places}/>
                 </div>
-                <Place places={this.state.places}/>
-            </div>
         )
     }
 }

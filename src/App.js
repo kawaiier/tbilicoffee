@@ -1,16 +1,14 @@
 import './App.css';
+import Footer from './components/Footer';
+import Header from './components/Header';
 import PlacesList from './components/PlacesList';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>TbiliCoffee</h1>
-      </header>
+      <Header/>
       <PlacesList/>
-    <footer className="App-footer">
-      <p>Created by ME</p>
-    </footer>
+      <Footer/>
     </div>
   );
 }
